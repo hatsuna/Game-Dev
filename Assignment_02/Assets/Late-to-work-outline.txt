@@ -1,0 +1,109 @@
+ * Dave simulator - Late to work
+ * A multiple ending game about being late, romance, and consequences.
+ * 
+ * Gates:
+ * 	
+ * Gate 1 Lactose pills 
+ * Gate 2 = Cant find keys to car
+ * 
+ * 
+ * Each room explored progresses the clock by 15 minutes
+ * 	need to make it to work in time
+ * 
+ * Wake up - Bedroom
+ * 	Find phone to turn off the alarm clock
+ * 
+ * Muffled vibrations stir you awake. It should be around 5am,
+ * and you need to be at the office by 9. Exhausted, you push back the sheets and sit up.
+ * Where the fuck is your phone?
+ * 
+ * - Under your pillow (Pills)
+ * - Under your bed
+ * - On your nighttable (Phone - Gives visible time)
+ * 
+ * - Fuck it, I don't have time for this, I need to get to work. (Go to House)
+ * 
+ * Getting Ready - House - Doesn't have coffee, needs to stop at the coffee shop
+ * 	Exercises		Feed Cats
+ * 
+ * You tiptoe down the steps, hoping you don't wake your father.
+ * Checking the kitchen cabinets, there's no more coffee.
+ * 
+ * - Go back upstairs
+ * 
+ * - Do morning calisthenics
+ * - Find your cat to feed him (Can fake your death)
+ * 
+ * - Get in your car, Leave the house
+ * 	- Where are your keys?
+ * 	- Oh, they're in your pocket.
+ * 
+ * 
+ * Coffee Shop - Lady gives coffee with heavy cream
+ * 	Dump it		Drink it anyway
+ * 
+ * The coffee shop is already starting to fill up with morning communters.
+ * The middle aged Korean woman who runs the shop sees you walk in and smiles.
+ * "An iced coffee please."
+ * 
+ * Milk and Sugar?
+ * 
+ * - Cream and Sugar please
+ * - Soymilk and Sugar please, I can't have milk
+ * 
+ * She miss-hears you and accidentally puts a healthy dose of cream into your coffee and hands it to you.
+ * Her prettiness disorients you, and you stumble to hand her money, walking to the door with your dangerously 
+ * lactose-infested coffee in hand. The line is already almost at the door with more people lining up.
+ * 
+ * - Throw the coffee away.
+ * - Drink the coffee.
+ * 
+ * Highway
+ * 	Cut off traffic
+ * 		Might die (depends on if you had coffee or not, otherwise ur reflexes are too slow)
+ * 	Take the long way to work (add time)
+ * 
+ * You're on the highway, cruising at a comfortable 45 in the left lane, thinking about the coffee lady.
+ * Suddenly you realize your exit is really close, but you're still in the left lane.
+ * 
+ * - Cut off traffic (Coffee check)
+ * - Miss your exit and take the long way to work
+ * 
+ * Parking Garage
+ * 	Guy is tailing you
+ * 		drive slower (add time) to screw with him or move quickly (hes your boss)
+ * Selection of parking spots (closer = less time), (farther = more time)
+ * 
+ * You finally reach the parking garage. As you're pulling in looking for spots,
+ * you realize the car behind you is tailgating you pretty hard.
+ * The driver honks at you, swerving back and forth to try to get around, but you stand your ground.
+ * 
+ * - Drive slower to screw with the car behind you. (Boss is pissed)
+ * - Speed up and quickly find a parking spot to hide in.
+ * - Ignore the car and keep looking for a spot.
+ * 
+ * Office
+ * 	if you drank coffee but didnt have lactose pills, you die
+ * 	There are multiple lactose pills throughout the game, you can keep eating them
+ * 
+ * Gasping, sweat beading at your forehead, you finally stumble through the elevator onto your office floor.
+ * Unfortunately your boss is already there waiting for you.
+ * 
+ * If you drank coffee, you run to the bathroom.
+ * If you ate lactose pills, you survive.
+ * Otherwise you die.
+ * 
+ * Check if boss is pissed. 
+ * 
+ * Talk to your boss
+ * 	Did you make it on time?
+ * 	if you did and your boss isn't pissed, you keep your job
+ * 	if you did and your boss is pissed, you're on call for the next 3 weeks and your cat dies
+ *	
+ *	if you're late and your boss is pissed, you're on call for the next 3 weeks, your cat dies, and then you're fired
+ *	if you're late, and your boss isn't pissed, you're still fired.
+ * 		with no money you have 3 options
+ * 			- You die from crushing student loans.
+ * 			- You die from commiting suicide to forgive your student loans.
+ * 			- You fake your death if you fed your cat. And you win.
+ */

@@ -1,0 +1,10 @@
+the text argues that a Commodore 64 emulator has certain limitations vs. an actual Commodore 64 machine... what are those limitations? are they based in hardware or software?
+is the 10PRINT variant in figure 15.5 a better or a worse version of 10PRINT? why?
+what is the point of the "random sound" section at the end of the chapter?
+
+Compared to an actual Commodore 64, a modern PC running an emulator doesn't have Commodore 64 characters printed on the keyboard. Pixels drawn by the emulator appear overly crisp and an emulator allows the user to save states more easily. And because these limitations are rooted in the corresponding hardware, there are differences in experience that will be impossible to bridge, even if the software still acts the same.
+
+The "Four Walls" variant of 10PRINT in figure 15.5 comes off as a step backwards because of the significant degradation of code "elegance" which additionally results in a subjectively uglier output. The combination of unnecessary complexity to the code and likewise unnecessary complexity reflected in the output is off-putting compared to the clean elegance of the original 10PRINT.
+
+The take-away is that while emulation may be able to replicate some of the purpose, it is the marriage of software and hardware, designed to perform particular tasks, that represents the simplest and truest experience.
+

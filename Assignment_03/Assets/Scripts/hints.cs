@@ -14,12 +14,12 @@ public class hints : MonoBehaviour {
 		return ((a - b).magnitude);
 	}
 
-	// Update is called once per frame
-	void Update () {
-		string buffer = "";
-		if (distance(startingzone.position, player.position) < 20){
-			buffer += "You only get one shot, try to find the buried treasure!";
-		}
+		// Update is called once per frame
+		void Update () {
+			string buffer = "";
+			if (distance(startingzone.position, player.position) < 20){
+				buffer += "You only get one shot, try to find the buried treasure!";
+			}
 		if (distance (pillar.position, player.position) < 20){
 			buffer += "This is a pillar. Not a treasure.";
 		}

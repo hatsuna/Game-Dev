@@ -1,0 +1,41 @@
+(a) a 1 sentence premise, 
+(b) tell us the character object and "unique interaction", 
+(c) tell us about the world and obstacle or gate, and solution (or skill required to master?)
+
+
+Your phone is going off, and you need to snooze it. You're in your room but you're having a hard time distinguishing between what is real and what is a dream because you're sleep walking. While part of the room is recognizable and realistic, other parts of your room are fragments of a dream. You can hear your alarm clock but its too dark to see much.
+
+User Stories: As a player, I want to _______.
+Work Tasks: Smaller tasks, what you need to work to implement
+
+
+Should walking around in one state, should the player move in the other world?
+
+Should the player be fighting to stay awake? Should they be aware of how much time they have left?
+
+
+
+
+As a player, I want to be able to temporarily, "shut off" the dream state
+	- Create dream objects that temporarily disappear when the player "forces their eyes open"
+	- Be able to "brighten" the scene so that the player can temporarily be more aware of their surroundings
+	- The player camera switches between the player character in the room and the player character in the dream
+	- The player must be aware of the limited amount of "awake" time that they have left
+	- "Awake time" must restore while in the dream world
+
+As a player I want to be both in a dream and wandering my room simultaneously
+	- The player is controlling two separate bodies simultaneously 
+	- the two separate camera views must be switched between when "forcing your eyes open"
+
+As a player, I must be able to fail.
+	- Various objects in the real world may be hazardous to interact with
+		- walking out of the window
+		- falling into the tub
+		- falling down the stairs
+	- Player health must be somewhat visible to the user
+
+As a player, I want to be able to pick up things
+	- check the distance between the player and the interactable objects
+	- on collision give UI hint that player can interact with object
+	- The player then presses a button to pick up the object that is in range
+	- When close to something, the object should become a child of the player, maybe floating around them

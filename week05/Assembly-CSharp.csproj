@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{E740876D-FE87-82CD-231D-B9433FCE2890}</ProjectGuid>
+	<ProjectGuid>{2701253E-4245-7466-6DC4-8BB55D5E125A}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -46,8 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\TreasureHint.cs" />
-     <Compile Include="Assets\Scripts\camUpdate.cs" />
+     <Compile Include="Assets\Scripts\RigidbodyMove.cs" />
+     <Compile Include="Assets\Scripts\TransformMove.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

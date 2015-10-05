@@ -1,0 +1,13 @@
+journal_4
+
+what qualities make for a "good" port in game development?
+describe one change the authors made to port 10PRINT to a different platform, and why they did that?
+what is an esoteric programming language? why do they exist?
+
+
+
+A good port: adapting a game from one set of hardware to another; needs to mimic the quality of play of the original as closely as possible. This can be achieved by utilizing the constraints and affordances of a specific platform to provide the best possible experience, hopefully mirroring and maybe even surpassing the original experience.
+
+When porting 10PRINT to Perl, the creators of the port were able to use a similar approach to 10PRINT when choosing between characters to print. However, by using the statement: binmode STDOUT, "utf8"; the perl program is able to output characters in Unicode, which correspond in some relative closeness to the character used in 10PRINT. By choosing Unicode over Ascii characters, the programmers were able to recreate, to some degree, the maze-like structure of the original 10PRINT.
+
+Esoteric programming languages exist outside the conventions and values of "traditional" programming languages, instead pressing the limits of programming language design. These languages can exist to express values of minimalism, of two-dimensional flow, and press these constraints upon the programming language itself. Within these limitations, esoteric languages can provide insight about pockets of programming that are often taken for granted.

@@ -9,11 +9,19 @@ User Stories: As a player, I want to _______.
 Work Tasks: Smaller tasks, what you need to work to implement
 
 
-Should walking around in one state, should the player move in the other world?
+Should walking around in one state, move the player in the other world?
 
 Should the player be fighting to stay awake? Should they be aware of how much time they have left?
 
+Dream state will get progressively more weird each time the player returns 
 
+
+Dream state is constant brightness,
+The player-light will dim and get brighter to signify becoming more and less aware in the real world,
+
+As a player, I want to try and stay in the real world for as long as I can
+	- The real world will dim and eventually fade back into dream state
+	- The player may attempt to spam a button to fight a losing war to stay awake
 
 
 As a player, I want to be able to temporarily, "shut off" the dream state
@@ -24,18 +32,35 @@ As a player, I want to be able to temporarily, "shut off" the dream state
 	- "Awake time" must restore while in the dream world
 
 As a player I want to be both in a dream and wandering my room simultaneously
-	- The player is controlling two separate bodies simultaneously 
-	- the two separate camera views must be switched between when "forcing your eyes open"
+	- The player is controlling two separate rigidbodies simultaneously 
+	- the two separate camera views must be attached to each rigid body
+	- the player must have a way to switch between bodies, either voluntarily or involuntarily
 
-As a player, I must be able to fail.
+As a player, I must be able to both fail and win
 	- Various objects in the real world may be hazardous to interact with
 		- walking out of the window
 		- falling into the tub
 		- falling down the stairs
-	- Player health must be somewhat visible to the user
+	- There must be an objective that the player can reach or accomplish
 
-As a player, I want to be able to pick up things
-	- check the distance between the player and the interactable objects
+As a player, I want to be able to interact with the world(s)
 	- on collision give UI hint that player can interact with object
 	- The player then presses a button to pick up the object that is in range
-	- When close to something, the object should become a child of the player, maybe floating around them
+	- the player should have some idea about what objects are in inventory, or have been interacted with.
+
+
+
+
+Have different room layouts when in the dream world vs real world
+maybe different objectives are only in certain rooms
+
+alarm clock plays every once in a while
+
+Robert's Suggestions?
+
+add a rhythm to the awake timer
+	maybe farther away, lowers the consistency of switching
+	closer, increase frequency?
+
+tank controls?
+switch A and D to rotation instead of mouselook

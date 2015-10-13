@@ -1,0 +1,11 @@
+First, read Liz England's "The Door Problem" --http://www.lizengland.com/blog/2014/04/the-door-problem/
+are there any dev roles listed there that surprised you? Which sounds the best, and which sounds the worst to you?
+Define "game development"! what does it involve doing? What disciplines or skills do you need to practice to be a game developer? Is it easy or hard, and why?
+How is game development different from game design?
+(address all of these questions in one lucid (100-150 word) journal entry)
+
+As a programmer, it was interesting to see the differentiation between varying types of artists, from concept to much more narrow aspects such as FX and Lighting roles. But on a personal level, gameplay programming, AI programming, and combat design seem most enticing. On the flip side, localization appears to be a specific kind of nightmare because of how awfully I flounder in other languages.
+
+Game development takes some form of interaction between the player and the game, and breaks it down into all these considerations on how this interaction should go about. These considerations: about how it should look; the context it happens in; how the player can act and how the game responds; all take differing creative skills (programming, modeling, sound creation). In addition, a varying array of communicative and management skills allow these creative skills to interplay and come together. Because it’s quite difficult to possess and be proficient in all of these disciplines and skillsets, game development is particularly difficult, especially so for a single person.
+
+Design is planning how the thing will work. Development is making the thing and watching all of your plans go awry.

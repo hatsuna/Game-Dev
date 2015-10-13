@@ -9,13 +9,14 @@ public class GameLogic : MonoBehaviour {
 //	public Text controlsUI;
 	public Text AwakeUI;
 	public Text hintUI;
+	public Light cameraLight;
 	
 	bool isDreaming = false;
 	float maxAwakeTime = 10.0f; //how long you can stay awake for
 	float minAwakeTime = 3.0f;
 	float awakeTimer = 10.0f; // how long you can currently stay awake for
 	// float awakeRestore = 0.01f; // how much time restores while dreaming, only needed if one is skewed
-	
+
 	void Start (){
 		DreamCam.gameObject.SetActive (false);
 		RealCam.gameObject.SetActive (true);	
@@ -27,6 +28,9 @@ public class GameLogic : MonoBehaviour {
 		if( Input.GetKeyDown (KeyCode.Q)){
 			isDreaming = !isDreaming; // If dreaming -> not dreaming, if not dreaming -> now dreaming
 		}*/
+
+		//Changing light intensity based on awake time
+		cameraLight.intensity = 10 * (awakeTimer / maxAwakeTime);	
 
 		//WHAT IF YOU"RE NOT IN CONTROL OF YOUR DREAMING AND WAKEFULNESS
 		if (awakeTimer <= 0){

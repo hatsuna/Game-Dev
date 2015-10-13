@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\GameLogic.cs" />
      <Compile Include="Assets\Scripts\PlayerControl.cs" />
      <Compile Include="Assets\Scripts\RigidbodyFollow.cs" />
+     <Compile Include="Assets\Scripts\SoundTrigger.cs" />
      <Compile Include="Assets\Scripts\Unused\DeathTrigger.cs" />
      <Compile Include="Assets\Scripts\Unused\Grabbable.cs" />
      <Compile Include="Assets\Scripts\Unused\MouseRigidbody.cs" />

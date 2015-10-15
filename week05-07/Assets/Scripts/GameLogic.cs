@@ -3,6 +3,21 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class GameLogic : MonoBehaviour {
+	
+	/*
+	 * Set off Alarm clock
+	 * Turn off Alarm clock
+	 * Find Pills 
+	 * Bring your Dream self to the door
+	 * Bring your Real self to bed
+	 */
+
+
+	//use static variables to pass variables from one scene to the next
+	//use public static <ClassName> <VariableName> to have anything talk to the object easily
+	// in Start(), set <VariableName> = this;
+
+	public static GameLogic GLogic;
 
 	public Transform RealCam;
 	public Transform DreamCam;
@@ -11,12 +26,14 @@ public class GameLogic : MonoBehaviour {
 	public Text hintUI;
 	public Text inventoryUI;
 	public Text controlsUI;
-	
+
 	bool isDreaming = true;
-	float maxAwakeTime = 10.0f; //how long you can stay awake for
-	float minAwakeTime = 3.0f;
-	float awakeTimer = 10.0f; // how long you can currently stay awake for
-	// float awakeRestore = 0.01f; // how much time restores while dreaming, only needed if one is skewed
+	float initWakeTime = 10.0f; // Wake Time you start with
+	float maxAwakeTime; // Wake Time per Cycle
+	float minAwakeTime = 3.0f; // Lower Limit of how short cycles can be
+	float awakeTimer; // Current Wake Time
+	float awakeReduction = 0.9f; // After Each cycle, what percentage of awake time will be available next cycle
+	float initLightIntensity = 10.0f;
 	string GameState = "Start";
 	/*
 	 * Start - Start screen
@@ -30,6 +47,11 @@ public class GameLogic : MonoBehaviour {
 	GameObject nearItem;
 
 	void Start (){
+		GLogic = this;
+		maxAwakeTime = initWakeTime;
+		awakeTimer = initWakeTime;
+		RealCam.gameObject.SetActive (false);
+		DreamCam.gameObject.SetActive (true);
 	}
 
 	void CheckWakeState(){
@@ -39,13 +61,13 @@ public class GameLogic : MonoBehaviour {
 		}*/
 		
 		//Changing light intensity based on awake time
-		cameraLight.intensity = 10 * (awakeTimer / maxAwakeTime);	
+		cameraLight.intensity = initLightIntensity * (awakeTimer / maxAwakeTime);
 		
 		//WHAT IF YOU"RE NOT IN CONTROL OF YOUR DREAMING AND WAKEFULNESS
 		if (awakeTimer <= 0){
 			isDreaming = true;
 			if (maxAwakeTime > minAwakeTime){
-				maxAwakeTime = (maxAwakeTime / 4) * 3; // Reduces Max awake time by 1/4 each cycle
+				maxAwakeTime = maxAwakeTime  * awakeReduction; // Reduces Max awake time by awakeReduction each cycle
 			}else {
 				maxAwakeTime = minAwakeTime;
 			}
@@ -57,12 +79,37 @@ public class GameLogic : MonoBehaviour {
 		
 		
 		// Give player feedback that they are falling asleep
-		if (awakeTimer <= (maxAwakeTime / 5.0f) && !isDreaming && awakeTimer >= (maxAwakeTime / 10.0f)){
-			hintUI.text = "\n\nSo tired..";
+		if (awakeTimer <= (maxAwakeTime / 4.0f) && !isDreaming && (awakeTimer >= 0.0f)){
+			AwakeUI.text += "\n\nSo tired..";
 		}
-		if (awakeTimer <= 0){
+
+		// Give player gameplay progression hints
+		if(isDreaming){
+			if (maxAwakeTime < initWakeTime && maxAwakeTime >= (initWakeTime * 0.75)){
+				AwakeUI.text += "\n\nAm I dreaming?";
+			}
+			if (maxAwakeTime <= (initWakeTime * 0.75f) && maxAwakeTime >= (initWakeTime * 0.5f)){ // between 75% and 50% of original time
+				AwakeUI.text += "\n\nWhat the hell is this?";
+			}
+			if (maxAwakeTime <= (initWakeTime * 0.5f) && maxAwakeTime >= (initWakeTime * 0.25f)){ // between 50% and 25% of original time
+				AwakeUI.text += "\n\nWhy can't I sleep?";
+			}
+		} else { //is not dreaming)
+			if (maxAwakeTime < initWakeTime && maxAwakeTime >= (initWakeTime * 0.75)){
+				AwakeUI.text += "\n\nOr is this real?";
+			}
+			if (maxAwakeTime <= (initWakeTime * 0.75f) && maxAwakeTime >= (initWakeTime * 0.5f)){ // between 75% and 50% of original time
+				AwakeUI.text += "\n\nWhy can't I stay awake?";
+			}
+			if (maxAwakeTime <= (initWakeTime * 0.5f) && maxAwakeTime >= (initWakeTime * 0.25f)){ // between 50% and 25% of original time
+				AwakeUI.text += "\n\nWhat the fuck is wrong with me?";
+			}
+		}
+		/*if (awakeTimer <= 0){
 			hintUI.text = "";
-		}
+		}*/
+
+		// Change Player Cameras based on Waking state
 		if(isDreaming ){//|| awakeTimer <= 0){
 			RealCam.gameObject.SetActive (false);
 			DreamCam.gameObject.SetActive (true);
@@ -107,6 +154,7 @@ public class GameLogic : MonoBehaviour {
 				hintUI.text = "";
 				GameState = "Alive";
 				//Activate both players *********************
+				goto case "Alive";
 			}
 			break;
 		case "Alive":
@@ -133,16 +181,8 @@ public class GameLogic : MonoBehaviour {
 		}
 	}
 
-
-	// Use tags to differentiate between collided objects,
-	//		hazards, things to pick up, etc
-	void OnTriggerEnter (Collider activator) { // this parameter will get automatically get filled in with the thing that enters it
-		hintUI.text = "Is a trigger? " + activator.isTrigger;
-
-		if (activator.gameObject.tag == "Player"){
-			hintUI.text = "GG I just broke my game";
-		}
-
+	
+	public void LogicTrigger(Collider activator, string playerTag){
 		if (activator.gameObject.tag == "Item"){
 			hintUI.text = "There's something here.\n[E] to pick up";	
 			nearItem = activator.gameObject;
@@ -155,13 +195,22 @@ public class GameLogic : MonoBehaviour {
 			hintUI.text = "You feel a gentle breeze.\nThere must be a window nearby.";
 		}
 		if (activator.gameObject.tag == "Window"){
-			DeathTextBuffer = "You stumble into the window and crash though the glass.\nYou died.\n\nPress [R] to restart.";
+			if (playerTag == "Dreamer"){
+				DeathTextBuffer = "You feel the glass of the window crack and shatter" +
+					"against your w into the window and crash though the glass.\nYou died.\n\nPress [R] to restart.";
+			}
 			GameState = "Dead";
 		}
-		
+
+		if (playerTag == "Player"){
+			hintUI.text += "\nThe real player is touching this";
+		}
+		if (playerTag == "Dreamer"){
+			hintUI.text += "\nThe dreamer is touching this";
+		}
 	}
 
-	void OnTriggerExit (Collider deactivated) {
+	public void LogicUntrigger(Collider deactivated, string playerTag){
 		if (deactivated.gameObject.tag == "Item"){
 			canInteract = false;
 			if (hasItem){
@@ -169,14 +218,6 @@ public class GameLogic : MonoBehaviour {
 			}
 		}
 		hintUI.text = "";
+
 	}
 }
-
-//in-class code
-/*
-	void OnTriggerStay (Collider active){ // could use this
-		//can maybe parenting to pick up items
-		if (activator.tag == "Pickup"){
-			activator.transform.SetParent (transform);
-		}
-	}*/

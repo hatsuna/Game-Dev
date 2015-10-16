@@ -42,9 +42,10 @@ public class GameLogic : MonoBehaviour {
 	 * 
 	 */
 	string DeathTextBuffer;
-	bool canInteract = false; // determines if player can use nearItem
-	bool hasItem = false;
-	GameObject nearItem;
+	bool canInteract = false; // determines if player can use near
+	bool hasPhone = false;
+	bool hasPills = false;
+	GameObject near;
 
 	void Start (){
 		GLogic = this;
@@ -161,10 +162,15 @@ public class GameLogic : MonoBehaviour {
 			controlsUI.text = "[WASD] to move\nMouse to look\n[Space] to wake up\n[R] to restart";
 			CheckWakeState();
 			if(Input.GetKeyDown (KeyCode.E)){
-				if (canInteract && !hasItem){
-					inventoryUI.text += "\n" + nearItem.name;
-					hintUI.text = "Picked up " + nearItem.name;
-					hasItem = true;
+				if (canInteract){ // && !hasPhone){
+					inventoryUI.text += "\n" + near.tag;
+					hintUI.text = "Picked up " + near.tag;
+					if ( near.tag == "Phone"){
+						hasPhone = true;
+					}
+					if ( near.tag == "Pills"){
+						hasPills = true;
+					}
 				}
 			}
 			break;
@@ -183,13 +189,18 @@ public class GameLogic : MonoBehaviour {
 
 	
 	public void LogicTrigger(Collider activator, string playerTag){
-		if (activator.gameObject.tag == "Item"){
-			hintUI.text = "There's something here.\n[E] to pick up";	
-			nearItem = activator.gameObject;
+		if (activator.gameObject.tag == "Phone"){
+			hintUI.text = "Oh, here's your phone.\n[E] to pick up";	
+			near = activator.gameObject;
 			canInteract = true;
 		} 
+		if (activator.gameObject.tag == "Pills"){
+			hintUI.text = "Pills here.\n[E] to pick up";
+			near = activator.gameObject;
+			canInteract = true;
+		}
 		if (activator.gameObject.tag == "Hazard"){
-			hintUI.text = "you are dying right now";
+			hintUI.text = "The odd sensation of absent heat tingles your skin as the flames dance around you.";
 		}
 		if (activator.gameObject.tag == "Window Warning"){
 			hintUI.text = "You feel a gentle breeze.\nThere must be a window nearby.";
@@ -197,7 +208,10 @@ public class GameLogic : MonoBehaviour {
 		if (activator.gameObject.tag == "Window"){
 			if (playerTag == "Dreamer"){
 				DeathTextBuffer = "You feel the glass of the window crack and shatter" +
-					"against your w into the window and crash though the glass.\nYou died.\n\nPress [R] to restart.";
+					"as you stumble into the window and fall to your death.\n\nPress [R] to restart.";
+			} else if (playerTag == "Player"){
+				DeathTextBuffer = "You drowzily stumble into the window, shattering it. The razor shards " +
+					"tear at your skin as you fall into the cloudy abyss below.\n\nPress [R] to restart.";
 			}
 			GameState = "Dead";
 		}
@@ -211,11 +225,12 @@ public class GameLogic : MonoBehaviour {
 	}
 
 	public void LogicUntrigger(Collider deactivated, string playerTag){
-		if (deactivated.gameObject.tag == "Item"){
-			canInteract = false;
-			if (hasItem){
-				deactivated.gameObject.SetActive (false);
-			}
+		canInteract = false;
+		if (deactivated.gameObject.tag == "Phone" && hasPhone){
+			deactivated.gameObject.SetActive (false);
+		}
+		if (deactivated.gameObject.tag == "Pills" && hasPills){
+			deactivated.gameObject.SetActive (false);
 		}
 		hintUI.text = "";
 

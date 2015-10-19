@@ -16,7 +16,6 @@ public class GameLogic : MonoBehaviour {
 	//use static variables to pass variables from one scene to the next
 	//use public static <ClassName> <VariableName> to have anything talk to the object easily
 	// in Start(), set <VariableName> = this;
-
 	public static GameLogic GLogic;
 
 	public Transform RealCam;
@@ -27,13 +26,13 @@ public class GameLogic : MonoBehaviour {
 	public Text inventoryUI;
 	public Text controlsUI;
 
-	bool isDreaming = true;
+	bool isDreaming = true; //Starts player in dream
 	float initWakeTime = 10.0f; // Wake Time you start with
 	float maxAwakeTime; // Wake Time per Cycle
 	float minAwakeTime = 3.0f; // Lower Limit of how short cycles can be
 	float awakeTimer; // Current Wake Time
 	float awakeReduction = 0.9f; // After Each cycle, what percentage of awake time will be available next cycle
-	float initLightIntensity = 10.0f;
+	float initLightIntensity = 10.0f; //Starting light intensity
 	string GameState = "Start";
 	/*
 	 * Start - Start screen
@@ -90,20 +89,20 @@ public class GameLogic : MonoBehaviour {
 				AwakeUI.text += "\n\nAm I dreaming?";
 			}
 			if (maxAwakeTime <= (initWakeTime * 0.75f) && maxAwakeTime >= (initWakeTime * 0.5f)){ // between 75% and 50% of original time
-				AwakeUI.text += "\n\nWhat the hell is this?";
+				AwakeUI.text += "\n\nWhy can't I sleep?";
 			}
 			if (maxAwakeTime <= (initWakeTime * 0.5f) && maxAwakeTime >= (initWakeTime * 0.25f)){ // between 50% and 25% of original time
-				AwakeUI.text += "\n\nWhy can't I sleep?";
+				AwakeUI.text += "\n\nI just want to lay down.";
 			}
 		} else { //is not dreaming)
 			if (maxAwakeTime < initWakeTime && maxAwakeTime >= (initWakeTime * 0.75)){
 				AwakeUI.text += "\n\nOr is this real?";
 			}
 			if (maxAwakeTime <= (initWakeTime * 0.75f) && maxAwakeTime >= (initWakeTime * 0.5f)){ // between 75% and 50% of original time
-				AwakeUI.text += "\n\nWhy can't I stay awake?";
+				AwakeUI.text += "\n\nI just want to sleep.";
 			}
 			if (maxAwakeTime <= (initWakeTime * 0.5f) && maxAwakeTime >= (initWakeTime * 0.25f)){ // between 50% and 25% of original time
-				AwakeUI.text += "\n\nWhat the fuck is wrong with me?";
+				AwakeUI.text += "\n\nWhat is wrong with me?";
 			}
 		}
 		/*if (awakeTimer <= 0){
@@ -150,11 +149,11 @@ public class GameLogic : MonoBehaviour {
 					"Press [Space] to wake up\n" +
 					"Don't let your dreams be dreams.";
 			
+			//WIP
 			//probably insert some alarm sound thing here or have it periodically go off
 			if(Input.GetKeyDown (KeyCode.Space)){
 				hintUI.text = "";
 				GameState = "Alive";
-				//Activate both players *********************
 				goto case "Alive";
 			}
 			break;
@@ -167,15 +166,35 @@ public class GameLogic : MonoBehaviour {
 					hintUI.text = "Picked up " + near.tag;
 					if ( near.tag == "Phone"){
 						hasPhone = true;
+						if(hasPills){
+							hintUI.text += "\nNow I can finally go back to bed.";
+						}else{ //doesnt have pills yet
+							hintUI.text += "\nUgh finally.\nNow I just need some sleeping pills.";
+						}
 					}
 					if ( near.tag == "Pills"){
 						hasPills = true;
+						if(hasPhone){
+							hintUI.text += "\nI should be able to sleep now. Time for bed.";
+						}else{ //no phone
+							hintUI.text += "\nI should be able to fall asleep,\nbut that damn alarm is still going off.";
+						}
 					}
+
 				}
 			}
 			break;
 		case "Dead":
+			DreamCam.gameObject.SetActive(false);
+			RealCam.gameObject.SetActive(false);
 			hintUI.text = DeathTextBuffer;
+			break;
+		case "Asleep": //win
+			DreamCam.gameObject.SetActive(false);
+			RealCam.gameObject.SetActive(false);
+			hintUI.text = "Goodnight.\n\nParasomnia\n" +
+				"a game by Matt\n\n" +
+					"[R] to restart";
 			break;
 		default:
 			break;
@@ -189,39 +208,74 @@ public class GameLogic : MonoBehaviour {
 
 	
 	public void LogicTrigger(Collider activator, string playerTag){
+		if (activator.gameObject.tag == "Bed"){
+			if (playerTag == "Player" && RealCam.gameObject.activeSelf){
+				hintUI.text = "Your bed feels nice and warm.";
+			}
+			if (playerTag == "Player" && DreamCam.gameObject.activeSelf){
+				hintUI.text = "Even within the dream, you feel the softness of the bed under you.";
+			}
+			if (hasPhone && hasPills){
+				//Win
+				GameState = "Asleep";
+			}else if (!hasPhone || !hasPills){
+				// Need to turn off the alarm and get pills
+				hintUI.text += "\nBut you still need to turn off the alarm\nand take some sleeping pills before you can sleep.";
+			}
+		}
 		if (activator.gameObject.tag == "Phone"){
-			hintUI.text = "Oh, here's your phone.\n[E] to pick up";	
+			if (playerTag == "Player" && RealCam.gameObject.activeSelf){
+				hintUI.text = "Oh, here's your phone.\n[E] to pick up";
+			}
+			if (playerTag == "Player" && DreamCam.gameObject.activeSelf){
+				hintUI.text = "Your feel your hand brush against your phone.\n[E] to pick up";
+			}
 			near = activator.gameObject;
 			canInteract = true;
 		} 
 		if (activator.gameObject.tag == "Pills"){
-			hintUI.text = "Pills here.\n[E] to pick up";
+			if (playerTag == "Player" && RealCam.gameObject.activeSelf){
+				hintUI.text = "The sleeping pills are right where you left them.\n[E] to pick up";
+			}
+			if (playerTag == "Player" && DreamCam.gameObject.activeSelf){
+				hintUI.text = "Your hand unconciously grabs for where the pills should be.\n[E] to pick up";
+			}
 			near = activator.gameObject;
 			canInteract = true;
 		}
 		if (activator.gameObject.tag == "Hazard"){
-			hintUI.text = "The odd sensation of absent heat tingles your skin as the flames dance around you.";
+			if (playerTag == "Dreamer" && DreamCam.gameObject.activeSelf){
+				hintUI.text = "The flames around you almost feel hot...\nBut it's only a dream, right?";
+			}
 		}
 		if (activator.gameObject.tag == "Window Warning"){
-			hintUI.text = "You feel a gentle breeze.\nThere must be a window nearby.";
+			if (playerTag == "Player" && RealCam.gameObject.activeSelf){
+				hintUI.text = "The window allows a gentle breeze into the room.";
+			}
+			if (playerTag == "Player" && DreamCam.gameObject.activeSelf){
+				hintUI.text = "The open window's cool air causes your skin to tingle,\neven in the dream.";
+			}
 		}
 		if (activator.gameObject.tag == "Window"){
-			if (playerTag == "Dreamer"){
-				DeathTextBuffer = "You feel the glass of the window crack and shatter" +
+			// WIP
+			//Add a forward velocity to push them out the window?
+			if (playerTag == "Player" && DreamCam.gameObject.activeSelf){
+				DeathTextBuffer = "You feel the glass of the window crack and shatter\n" +
 					"as you stumble into the window and fall to your death.\n\nPress [R] to restart.";
-			} else if (playerTag == "Player"){
-				DeathTextBuffer = "You drowzily stumble into the window, shattering it. The razor shards " +
+			} else if (playerTag == "Player" && RealCam.gameObject.activeSelf){
+				DeathTextBuffer = "You drowzily stumble into the window, shattering it.\nThe razor shards " +
 					"tear at your skin as you fall into the cloudy abyss below.\n\nPress [R] to restart.";
 			}
 			GameState = "Dead";
 		}
 
+		/*Debug messages, remove when done
 		if (playerTag == "Player"){
 			hintUI.text += "\nThe real player is touching this";
 		}
 		if (playerTag == "Dreamer"){
 			hintUI.text += "\nThe dreamer is touching this";
-		}
+		}*/
 	}
 
 	public void LogicUntrigger(Collider deactivated, string playerTag){

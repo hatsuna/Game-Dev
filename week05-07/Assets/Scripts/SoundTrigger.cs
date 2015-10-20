@@ -5,6 +5,8 @@ public class SoundTrigger : MonoBehaviour {
 
 	public AudioSource mySound; // assign in inspector
 
+	float playFreq = 10; //how often sound will play once its done playing
+	float elapsed = 0;
 	// Use this for initialization
 	void Start () {
 	
@@ -12,11 +14,13 @@ public class SoundTrigger : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown (KeyCode.P)){
-			if (mySound.isPlaying == false){
-				mySound.Play();
-			}
-
+		if (elapsed >= playFreq){
+			mySound.Play();
+		}
+		if (mySound.isPlaying == true){
+			elapsed = 0;
+		}else {
+			elapsed += Time.deltaTime;
 		}
 	}
 }

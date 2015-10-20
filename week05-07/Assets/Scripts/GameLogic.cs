@@ -45,6 +45,7 @@ public class GameLogic : MonoBehaviour {
 	bool hasPhone = false;
 	bool hasPills = false;
 	GameObject near;
+	AudioSource audio;
 
 	void Start (){
 		GLogic = this;
@@ -52,6 +53,7 @@ public class GameLogic : MonoBehaviour {
 		awakeTimer = initWakeTime;
 		RealCam.gameObject.SetActive (false);
 		DreamCam.gameObject.SetActive (true);
+		audio = gameObject.GetComponent<AudioSource>();
 	}
 
 	void CheckWakeState(){
@@ -75,34 +77,34 @@ public class GameLogic : MonoBehaviour {
 			isDreaming = false;
 		}*/ 
 		
-		AwakeUI.text = "" + awakeTimer;
+		AwakeUI.text = "" + (int)awakeTimer;
 		
 		
 		// Give player feedback that they are falling asleep
 		if (awakeTimer <= (maxAwakeTime / 4.0f) && !isDreaming && (awakeTimer >= 0.0f)){
-			AwakeUI.text += "\n\nSo tired..";
+			AwakeUI.text += "\nSo tired..";
 		}
 
 		// Give player gameplay progression hints
 		if(isDreaming){
 			if (maxAwakeTime < initWakeTime && maxAwakeTime >= (initWakeTime * 0.75)){
-				AwakeUI.text += "\n\nAm I dreaming?";
+				AwakeUI.text += "\nAm I dreaming?";
 			}
 			if (maxAwakeTime <= (initWakeTime * 0.75f) && maxAwakeTime >= (initWakeTime * 0.5f)){ // between 75% and 50% of original time
-				AwakeUI.text += "\n\nWhy can't I sleep?";
+				AwakeUI.text += "\nWhy can't I sleep?";
 			}
 			if (maxAwakeTime <= (initWakeTime * 0.5f) && maxAwakeTime >= (initWakeTime * 0.25f)){ // between 50% and 25% of original time
-				AwakeUI.text += "\n\nI just want to lay down.";
+				AwakeUI.text += "\nI just want to lay down.";
 			}
 		} else { //is not dreaming)
 			if (maxAwakeTime < initWakeTime && maxAwakeTime >= (initWakeTime * 0.75)){
-				AwakeUI.text += "\n\nOr is this real?";
+				AwakeUI.text += "\nOr is this real?";
 			}
 			if (maxAwakeTime <= (initWakeTime * 0.75f) && maxAwakeTime >= (initWakeTime * 0.5f)){ // between 75% and 50% of original time
-				AwakeUI.text += "\n\nI just want to sleep.";
+				AwakeUI.text += "\nI just want to sleep.";
 			}
 			if (maxAwakeTime <= (initWakeTime * 0.5f) && maxAwakeTime >= (initWakeTime * 0.25f)){ // between 50% and 25% of original time
-				AwakeUI.text += "\n\nWhat is wrong with me?";
+				AwakeUI.text += "\nWhat is wrong with me?";
 			}
 		}
 		/*if (awakeTimer <= 0){
@@ -138,16 +140,28 @@ public class GameLogic : MonoBehaviour {
 		}
 	}
 
+	void EndGame(){
+		DreamCam.gameObject.GetComponent<AudioListener>().enabled = false;
+		DreamCam.gameObject.SetActive(false);
+		RealCam.gameObject.GetComponent<AudioListener>().enabled = false;
+		RealCam.gameObject.SetActive(false);
+		AwakeUI.text = "";
+		inventoryUI.text = "";
+		controlsUI.text = "";
+		GL.Clear(false,true,Color.black);
+	}
+
 	// Update is called once per frame
 	void Update () {
 	switch(GameState){
 		case "Start":
 			hintUI.text = 
 				"Parasomnia\n" +
-					"a game by Matt\n\n" +
+					"a game by matt\n\n" +
 					"Is that... an alarm?\n" +
 					"Press [Space] to wake up\n" +
-					"Don't let your dreams be dreams.";
+					"Don't let your dreams be dreams.\n\n" +
+					"Sound is recommended";
 			
 			//WIP
 			//probably insert some alarm sound thing here or have it periodically go off
@@ -185,16 +199,16 @@ public class GameLogic : MonoBehaviour {
 			}
 			break;
 		case "Dead":
-			DreamCam.gameObject.SetActive(false);
-			RealCam.gameObject.SetActive(false);
-			hintUI.text = DeathTextBuffer;
+			if (audio.isPlaying == false){
+				EndGame();
+				hintUI.text = DeathTextBuffer;
+			}
 			break;
 		case "Asleep": //win
-			DreamCam.gameObject.SetActive(false);
-			RealCam.gameObject.SetActive(false);
+			EndGame();
 			hintUI.text = "Goodnight.\n\nParasomnia\n" +
-				"a game by Matt\n\n" +
-					"[R] to restart";
+				"a game by matt\n\n" +
+					"[R] to play again";
 			break;
 		default:
 			break;
@@ -265,6 +279,9 @@ public class GameLogic : MonoBehaviour {
 			} else if (playerTag == "Player" && RealCam.gameObject.activeSelf){
 				DeathTextBuffer = "You drowzily stumble into the window, shattering it.\nThe razor shards " +
 					"tear at your skin as you fall into the cloudy abyss below.\n\nPress [R] to restart.";
+			}
+			if (audio.isPlaying == false){
+				audio.Play();
 			}
 			GameState = "Dead";
 		}

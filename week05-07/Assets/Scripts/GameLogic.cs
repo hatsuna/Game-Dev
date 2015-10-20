@@ -45,6 +45,7 @@ public class GameLogic : MonoBehaviour {
 	bool hasPhone = false;
 	bool hasPills = false;
 	GameObject near;
+	AudioSource audio;
 
 	void Start (){
 		GLogic = this;
@@ -52,6 +53,7 @@ public class GameLogic : MonoBehaviour {
 		awakeTimer = initWakeTime;
 		RealCam.gameObject.SetActive (false);
 		DreamCam.gameObject.SetActive (true);
+		audio = gameObject.GetComponent<AudioSource>();
 	}
 
 	void CheckWakeState(){
@@ -138,16 +140,23 @@ public class GameLogic : MonoBehaviour {
 		}
 	}
 
+	void ClearUI(){
+		AwakeUI.text = "";
+		inventoryUI.text = "";
+		controlsUI.text = "";
+	}
+
 	// Update is called once per frame
 	void Update () {
 	switch(GameState){
 		case "Start":
 			hintUI.text = 
 				"Parasomnia\n" +
-					"a game by Matt\n\n" +
+					"a game by matt\n\n" +
 					"Is that... an alarm?\n" +
 					"Press [Space] to wake up\n" +
-					"Don't let your dreams be dreams.";
+					"Don't let your dreams be dreams.\n\n" +
+					"Sound is recommended";
 			
 			//WIP
 			//probably insert some alarm sound thing here or have it periodically go off
@@ -185,16 +194,20 @@ public class GameLogic : MonoBehaviour {
 			}
 			break;
 		case "Dead":
-			DreamCam.gameObject.SetActive(false);
-			RealCam.gameObject.SetActive(false);
-			hintUI.text = DeathTextBuffer;
+			if (audio.isPlaying == false){
+				DreamCam.gameObject.SetActive(false);
+				RealCam.gameObject.SetActive(false);
+				ClearUI();
+				hintUI.text = DeathTextBuffer;
+			}
 			break;
 		case "Asleep": //win
 			DreamCam.gameObject.SetActive(false);
 			RealCam.gameObject.SetActive(false);
+			ClearUI();
 			hintUI.text = "Goodnight.\n\nParasomnia\n" +
-				"a game by Matt\n\n" +
-					"[R] to restart";
+				"a game by matt\n\n" +
+					"[R] to play again";
 			break;
 		default:
 			break;
@@ -265,6 +278,9 @@ public class GameLogic : MonoBehaviour {
 			} else if (playerTag == "Player" && RealCam.gameObject.activeSelf){
 				DeathTextBuffer = "You drowzily stumble into the window, shattering it.\nThe razor shards " +
 					"tear at your skin as you fall into the cloudy abyss below.\n\nPress [R] to restart.";
+			}
+			if (audio.isPlaying == false){
+				audio.Play();
 			}
 			GameState = "Dead";
 		}

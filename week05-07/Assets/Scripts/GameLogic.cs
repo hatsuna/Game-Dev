@@ -27,7 +27,7 @@ public class GameLogic : MonoBehaviour {
 	public Text controlsUI;
 
 	bool isDreaming = true; //Starts player in dream
-	float initWakeTime = 10.0f; // Wake Time you start with
+	float initWakeTime = 15.0f; // Wake Time you start with
 	float maxAwakeTime; // Wake Time per Cycle
 	float minAwakeTime = 3.0f; // Lower Limit of how short cycles can be
 	float awakeTimer; // Current Wake Time

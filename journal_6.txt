@@ -1,0 +1,14 @@
+talk about what your initial concept was
+what difficulties did you face? how did you solve them, or did you never solve them?
+how did your project change over time? what design decisions did you make?
+if you had more time, what else would you do?
+
+
+
+My initial concept came from an experience that at some level or another, I go through every morning. Teetering on the precipice of wakefulness and lucid dreaming, your alarm and real life calls you to wake up, but at an instinctual level, all you want to do is go back to sleep. While being pulled in both of these directions, you need to perform basic functions so that you can choose to either go back to sleep or get up and start your day. All the while being forced to navigate both your dream and your own apartment simultaneously.
+
+The largest difficulty I faced was having the player interacting and picking up objects. Eventually I just settled for a simpler system, and drastically reduced the amount of things the player could pick up.
+
+The project actually was prototyped with the player navigating two worlds relatively quickly. But outside of this feature, I didn't have a really good idea of what I wanted the player to do. Because of this, the game became a relatively simple "find the (not really) hidden objects" game.
+
+If I had more time, I would have liked to develop the dream world more, to make it more surreal and strange. As well as offering objectives to complete in the dream world to allow the player to choose the option to wake up and start their day instead of going back to sleep. 

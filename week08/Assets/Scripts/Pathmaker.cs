@@ -13,10 +13,13 @@ public class Pathmaker : MonoBehaviour {
 	public Transform floorPrefab;
 
 	private int counter = 0;
-	private int maxTiles = 20;
+	private int maxTiles = 20; // max times per path maker
+	private int numChildren = 0;
+	private float childCreate = 0.95f;
 
 	void Start(){
 		maxTiles = Random.Range (5, 50);
+		numChildren = Random.Range (1, 5);
 	}
 /*
 	UPDATE:
@@ -40,8 +43,12 @@ public class Pathmaker : MonoBehaviour {
 				transform.Rotate(new Vector3(0, 90, 0));
 			} else if( rand >= 0.25f && rand <= 0.5f){
 				transform.Rotate(new Vector3(0, -90, 0));
-			} else if (rand >= 0.95f && rand <= 1.0f){
-				Instantiate(pathmakerPrefab, transform.position, transform.rotation);
+			} else if (rand >= childCreate && rand <= 1.0f){
+				if( numChildren > 0){
+					Instantiate(pathmakerPrefab, transform.position, transform.rotation);
+					numChildren--;
+					childCreate += 0.01f;
+				}
 			}
 			Instantiate(floorPrefab, transform.position, Quaternion.Euler (0.0f, 0.0f, 0.0f));
 			// fix this line

@@ -13,6 +13,11 @@ public class Pathmaker : MonoBehaviour {
 	public Transform floorPrefab;
 
 	private int counter = 0;
+	private int maxTiles = 20;
+
+	void Start(){
+		maxTiles = Random.Range (5, 50);
+	}
 /*
 	UPDATE:
 		If counter is less than 50, then:
@@ -29,18 +34,18 @@ public class Pathmaker : MonoBehaviour {
 */
 	// Update is called once per frame
 	void Update () {
-		if (counter < 50){
+		if (counter < maxTiles){
 			float rand = Random.Range(0.0f, 1.0f);
 			if ( rand < 0.25f){
-				transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+				transform.Rotate(new Vector3(0, 90, 0));
 			} else if( rand >= 0.25f && rand <= 0.5f){
-				transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
+				transform.Rotate(new Vector3(0, -90, 0));
 			} else if (rand >= 0.95f && rand <= 1.0f){
 				Instantiate(pathmakerPrefab, transform.position, transform.rotation);
 			}
 			Instantiate(floorPrefab, transform.position, Quaternion.Euler (0.0f, 0.0f, 0.0f));
 			// fix this line
-			pathmakerPrefab.transform.position += (5 * Vector3.forward);
+			transform.Translate(new Vector3(0, 0, 5));
 
 			counter ++;
 		}else{

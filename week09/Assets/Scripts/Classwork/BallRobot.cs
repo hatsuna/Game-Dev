@@ -10,7 +10,7 @@ public class BallRobot : MonoBehaviour {
 
 		// if you sense a wall in front of you, turn right
 		Ray ray = new Ray( transform.position, transform.forward);
-		Debug.DrawRay (ray.origin, 
+		Debug.DrawRay (ray.origin, ray.direction);
 		// now shoot the raycast
 		if (Physics.Raycast(ray, 2f)){
 			// turn right

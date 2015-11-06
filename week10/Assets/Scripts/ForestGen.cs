@@ -26,7 +26,28 @@ public class ForestGen : MonoBehaviour {
 		// if I press Up, grow all the trees
 		if(Input.GetKeyDown(KeyCode.UpArrow)){
 			for ( int x = 0; x < listOfTrees.Count; x++){
-				listOfTrees[x].transform.localScale *= 1.1f;
+				listOfTrees[x].transform.localScale = new Vector3( listOfTrees[x].transform.localScale.x,
+				                                                   listOfTrees[x].transform.localScale.y * 1.3f,
+				                                                   listOfTrees[x].transform.localScale.z);
+			}
+		}
+
+		//Click to plant new trees
+		Ray mouseRay = Camera.main.ScreenPointToRay( Input.mousePosition);
+		RaycastHit mouseRayHit = new RaycastHit();
+		if (Input.GetMouseButtonDown (0)){ // if i left click, then...
+			if(Physics.Raycast(mouseRay, out mouseRayHit, 100f)){
+				GameObject aTree = (GameObject)Instantiate(treePrefab, mouseRayHit.point + new Vector3(0f,1f,0f), Quaternion.identity);
+				listOfTrees.Add(aTree);  
+			}
+		}
+		if (Input.GetMouseButtonDown(1)){
+			if(Physics.Raycast(mouseRay, out mouseRayHit, 100f)){
+				GameObject thingWeClickedOn = mouseRayHit.transform.gameObject;
+				if ( listOfTrees.Contains (thingWeClickedOn)){
+					listOfTrees.Remove(thingWeClickedOn);
+					Destroy (thingWeClickedOn);
+				}
 			}
 		}
 	}

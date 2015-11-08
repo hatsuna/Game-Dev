@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Pathmaker : MonoBehaviour {
-/* 	
- 	put this on a small sphere, it will drop a "breadcrumb" trail of floor tiles
-	DECLARE CLASS MEMBER VARIABLES:
-	Declare a private integer called counter that starts at 0;
-	Declare a public Transform called floorPrefab, assign the prefab in inspector;
-	Declare a public Transform called pathmakerPrefab, assign the prefab in inspector;
-*/
-	public Transform pathmakerPrefab;
+public class WallMaker : MonoBehaviour {
+
+	/*
+		Wallmaker should generate a random number between 0, 1, and 2
+		random number  = number of children wallmaker makes
+		random number + 1 = number of doors to make
+		wallmaker goes straight
+			must make a door before making a child
+			must make a child before making another door
+			then has oppotunites to repeat
+		wallmaker deletes itself when it collides with another wall
+	*/
+
+	public Transform wallmakerPrefab;
 	public Transform floorPrefab;
 
 	private int counter = 0;
@@ -45,7 +50,7 @@ public class Pathmaker : MonoBehaviour {
 				transform.Rotate(new Vector3(0, -90, 0));
 			} else if (rand >= childCreate && rand <= 1.0f){
 				if( numChildren > 0){
-					Instantiate(pathmakerPrefab, transform.position, transform.rotation);
+					Instantiate(wallmakerPrefab, transform.position, transform.rotation);
 					numChildren--;
 					childCreate += 0.01f;
 				}

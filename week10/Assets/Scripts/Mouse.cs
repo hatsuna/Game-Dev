@@ -4,13 +4,14 @@ using System.Collections;
 public class Mouse : MonoBehaviour {
 
 	//public Transform Cat;
-
+	AudioSource audio;
 	Rigidbody rbody;
 	float fov = 180;
 
 	// Use this for initialization
 	void Start () {
 		rbody = GetComponent<Rigidbody>();
+		audio = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -28,6 +29,9 @@ public class Mouse : MonoBehaviour {
 					if(mouseRayHitInfo.collider.tag == "Cat"){
 						Debug.Log ("I see cat");
 						if (mouseRayHitInfo.distance <= 20.0f){
+							if(!audio.isPlaying){
+								audio.Play();
+							}
 							Debug.Log ("run!");
 							transform.forward = -directionToCat.normalized;
 							rbody.AddForce(-directionToCat.normalized * 1000.0f);

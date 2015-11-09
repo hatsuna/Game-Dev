@@ -22,15 +22,19 @@ public class GameManager : MonoBehaviour {
 		Ray mouseRay = Camera.main.ScreenPointToRay( Input.mousePosition);
 		RaycastHit mouseRayHit = new RaycastHit();
 		if (Input.GetMouseButtonDown (0)){ // if i left click, then...
-			if(Physics.Raycast(mouseRay, out mouseRayHit, 100f)){
-				GameObject aCat = (GameObject)Instantiate(catPrefab, mouseRayHit.point + new Vector3(0f,1f,0f), Quaternion.identity);
-				catList.Add(aCat);  
+			if(Physics.Raycast(mouseRay, out mouseRayHit)){
+				if (mouseRayHit.collider.gameObject.tag != "Wall"){
+					GameObject aCat = (GameObject)Instantiate(catPrefab, mouseRayHit.point + new Vector3(0f,1f,0f), Quaternion.identity);
+					catList.Add(aCat); 
+				}
 			}
 		}
 		if (Input.GetMouseButtonDown(1)){
-			if(Physics.Raycast(mouseRay, out mouseRayHit, 100f)){
-				GameObject aMouse = (GameObject)Instantiate(mousePrefab, mouseRayHit.point + new Vector3(0f,1f,0f), Quaternion.identity);
-				miceList.Add(aMouse);
+			if(Physics.Raycast(mouseRay, out mouseRayHit)){
+				if (mouseRayHit.collider.gameObject.tag != "Wall"){
+					GameObject aMouse = (GameObject)Instantiate(mousePrefab, mouseRayHit.point + new Vector3(0f,1f,0f), Quaternion.identity);
+					miceList.Add(aMouse);
+				}
 			}
 		}	
 	}

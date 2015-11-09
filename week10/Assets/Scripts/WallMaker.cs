@@ -3,65 +3,59 @@ using System.Collections;
 
 public class WallMaker : MonoBehaviour {
 
+	public Transform wallmakerPrefab;
+	public Transform wallPrefab;
+
+	private int numChildren; //random number between 1, and 2 to determine number of children
+	private int doors; // numChildren + 1 = number of doors to make
+	private float childCreate; // percent chance to create a child
+	private bool createdDoor = false; // determines to either create a door or child next
+
+	void Start(){
+		numChildren = Random.Range(1,10);
+		doors = numChildren + 1;
+		childCreate = 0.65f;
+	}
 	/*
-		Wallmaker should generate a random number between 0, 1, and 2
-		random number  = number of children wallmaker makes
-		random number + 1 = number of doors to make
-		wallmaker goes straight
+	 	wallmaker goes straight
 			must make a door before making a child
 			must make a child before making another door
 			then has oppotunites to repeat
 		wallmaker deletes itself when it collides with another wall
 	*/
-
-	public Transform wallmakerPrefab;
-	public Transform floorPrefab;
-
-	private int counter = 0;
-	private int maxTiles = 20; // max times per path maker
-	private int numChildren = 0;
-	private float childCreate = 0.95f;
-
-	void Start(){
-		maxTiles = Random.Range (5, 50);
-		numChildren = Random.Range (1, 5);
-	}
-/*
-	UPDATE:
-		If counter is less than 50, then:
-			Generate a random number from 0.0f to 1.0f;
-			If random number is less than 0.25f, then rotate 90 degrees;
-			... Else if number is 0.25f-0.5f, then rotate -90 degrees;
-			... Else if number is 0.95f-1.0f, then instantiate a pathmakerPrefab clone at current position;
-	
-			Instantiate a floorPrefab clone at current position;
-			Move forward (in local space) by 5 units;
-			Increment counter;
-		Else:
-			Destroy self;
-*/
 	// Update is called once per frame
 	void Update () {
-		if (counter < maxTiles){
+	//	if (Input.GetKeyDown (KeyCode.Space)){
+			transform.Translate (new Vector3(0, 0, wallPrefab.localScale.z));
 			float rand = Random.Range(0.0f, 1.0f);
-			if ( rand < 0.25f){
-				transform.Rotate(new Vector3(0, 90, 0));
-			} else if( rand >= 0.25f && rand <= 0.5f){
-				transform.Rotate(new Vector3(0, -90, 0));
-			} else if (rand >= childCreate && rand <= 1.0f){
-				if( numChildren > 0){
-					Instantiate(wallmakerPrefab, transform.position, transform.rotation);
+			if ( rand >= childCreate && (doors > 0 || numChildren > 0)){ // if rand => childCreate
+				if(!createdDoor && doors > 0){ // create a door
+					transform.Translate(new Vector3 (0, 0, wallPrefab.localScale.z));
+					doors--;
+					Debug.Log ("Door Created. Door = " + doors);
+					createdDoor = true;
+				} else if(createdDoor && numChildren > 0){ // createdDoor == true, create a child
+					Quaternion rot = transform.rotation;
+					rot.eulerAngles += new Vector3 (0.0f, numChildren % 2 * 180.0f + 90.0f, 0.0f);
+					if ( rot.eulerAngles.y % 360 == 90.0f){
+						Instantiate (wallmakerPrefab, transform.position -  new Vector3(wallPrefab.localScale.x, 0, wallPrefab.localScale.z), rot);
+					} else { //if (rot.eulerAngles.y % 360 == 270.0f){	
+						Instantiate (wallmakerPrefab, transform.position -  new Vector3(-wallPrefab.localScale.x, 0, wallPrefab.localScale.z), rot);
+					}
 					numChildren--;
-					childCreate += 0.01f;
+					Debug.Log ("Child Created. Children = " + numChildren);
+					createdDoor = false;
 				}
+			} else { // create a wall behind wallMaker
+				Instantiate (wallPrefab, transform.position - new Vector3(0, 0, wallPrefab.localScale.z), transform.rotation);
 			}
-			Instantiate(floorPrefab, transform.position, Quaternion.Euler (0.0f, 0.0f, 0.0f));
-			// fix this line
-			transform.Translate(new Vector3(0, 0, 5));
+		//}
+	}
 
-			counter ++;
-		}else{
+	void OnCollisionEnter(Collision collision){
+		if (collision.gameObject.tag != "wallmaker"){
 			this.gameObject.SetActive(false);
+			Destroy(this.gameObject);
 		}
 	}
 }

@@ -5,11 +5,14 @@ public class Cat : MonoBehaviour {
 
 	//public Transform Mouse;
 
+	AudioSource audio;
+
 	Rigidbody rbody;
 	float fov = 120;
 	// Use this for initialization
 	void Start () {
 		rbody = GetComponent<Rigidbody>();
+		audio = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -30,6 +33,9 @@ public class Cat : MonoBehaviour {
 						transform.forward = directionToMouse.normalized;
 						rbody.AddForce(directionToMouse.normalized * 1000.0f); //chase
 						fov = 90;
+						if(!audio.isPlaying){
+							audio.Play();
+						}
 						if(catRayHitInfo.distance <= 5.0f && GameManager.miceList.Contains (mouse)){
 							GameManager.miceList.Remove(mouse);
 							Destroy(mouse);

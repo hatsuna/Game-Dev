@@ -1,0 +1,17 @@
+Unity Knowledge
+
+navigate 3D space
+if () statements
+managing variables
+UI stuff (buttons, text display)
+basic vector math (transform.position += ...)
+physics engine (PhysX, friction, bounciness, joints)
+physics code (velocities, forces, gravity)
+input (keyboard, mousebuttons, mouse movement)
+looping (while, for)
+raycasting
+source control, Git
+instantiation (making objects at runtime)
+game architecture (game manager)
+maya 3D stuff, troubleshooting 3D assets, implementing
+randomization ("pseudorandom")
